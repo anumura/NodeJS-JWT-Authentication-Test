@@ -34,7 +34,12 @@ let users = [
     {
         id: 2,
         username: 'reddy',
-        password: '123'
+        password: '456'
+    },
+    {
+        id: 3,
+        username: 'anumula',
+        password: '789'
     }
 ];
 
@@ -42,7 +47,7 @@ app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     for (let user of users) {
         if (username == user.username && password == user.password) {
-            let token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '3m' });
+            let token = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: '180s' });
             res.json({
                 success: true,
                 err: null,
@@ -50,14 +55,12 @@ app.post('/api/login', (req, res) => {
             });
             break;
         }
-        else {
-            res.status(401).json({
-                success: false,
-                token: null,
-                err: "username or password is incorrect"
-            })
-        }
     }
+        res.status(401).json({
+            success: false,
+            token: null,
+            err: "username or password is incorrect"
+        });
     // console.log("This is me", username,password);
     // res.json({data: "it works"});
 });
